@@ -69,8 +69,8 @@ def main():
 
 
     try:
-        # Retrieve the first USB device tty.usbserial-DJ009GBR
-        device = AlarmDecoder(SerialDevice(interface='/dev/tty.usbserial-DJ009GBR'))
+        # Retrieve the first USB device /dev/tty.usbserial-DJ009GBR
+        device = AlarmDecoder(SerialDevice(interface=settings["device"]))
 
         device.on_zone_fault += handle_on_zone_fault
         device.on_zone_restore += handle_zone_restore
