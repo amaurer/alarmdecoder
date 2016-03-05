@@ -1,0 +1,41 @@
+---
+
+# -- Wired
+Zone1: Garage Entry
+Zone2: Mud Room Entry
+Zone3: Living Room Entry (No Handle)
+Zone4: Living Room Entry (Handle)
+Zone5: Mud Room Glass
+Zone6: Laundry Room Glass
+Zone7: Bath Room Glass
+Zone8: Master Bedroom Glass
+Zone9: Master Bathroom Glass
+# CO
+Zone10: Mud Room CO Detector
+Zone11: Basement CO Detector
+# Fire
+Zone12: Master Hall Fire Detector
+Zone13: Basement Fire Detector
+
+# -- Wireless
+Zone17: Master Bedroom Door
+Zone18: Front Door
+Zone19: Basement Walkout Door
+Zone20: 2nd Floor Window
+Zone21: Basement Walkout Glass
+Zone22: Recreation Room Glass
+Zone23: Living Room Glass
+Zone24: Kitchen Glass
+Zone25: Dining Room Glass
+Zone26: Guest Bathroom Glass
+Zone27: Guest Bedroom Glass
+Zone28: Office Glass
+Zone29: 2nd Floor Glass
+# Fire
+Zone30: 2nd Floor Fire Detector
+Zone31: Bedroom/Office Fire Detector
+# CO
+Zone32: Bedroom/Office CO Detector
+
+
+ZoneAlertWhiteList: [1,2,3,4,17,18]
