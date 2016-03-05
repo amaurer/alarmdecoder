@@ -13,7 +13,7 @@ def main():
     zm = ZoneMapper('./zone-map.yml')
 
     # Load Account settings
-    with open("./account-settings.yml") as filestream:
+    with open("./settings.yml") as filestream:
         try:
             settings = yaml.load(filestream)
         except yaml.YAMLError as exc:
