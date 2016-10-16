@@ -1,10 +1,11 @@
+#!/usr/bin/python
+
 import time
 import yaml
 from alarmdecoder import AlarmDecoder
 from alarmdecoder.devices import SerialDevice
 from me.maurer.alarmdecoder.zonemapper import ZoneMapper
 from twilio.rest import TwilioRestClient
-# from daemonize import Daemonize
 
 
 def main():
@@ -88,11 +89,6 @@ def main():
     except Exception, ex:
         print 'Exception:', ex
 
-
-
-
-# daemon = Daemonize(app="alarm_decoder_system", pid=pid, action=main)
-# daemon.start()
 
 if __name__ == '__main__':
     main()
