@@ -1,17 +1,21 @@
 #!/usr/bin/python
 
-import time
-import yaml
+import yaml, time, os, sys, subprocess
 from alarmdecoder import AlarmDecoder
 from alarmdecoder.devices import SerialDevice
 from me.maurer.alarmdecoder.zonemapper import ZoneMapper
 from twilio.rest import TwilioRestClient
-
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 def main():
+    global deactivate
 
     # Number map of different Zones
     zm = ZoneMapper('./zone-map.yml')
+
+    # used to toggle disarm message send
+    deactivate = False
 
     # Load Account settings
     with open("./settings.yml") as filestream:
@@ -19,6 +23,28 @@ def main():
             settings = yaml.load(filestream)
         except yaml.YAMLError as exc:
             print(exc)
+
+
+
+    class DisarmEventHandler(FileSystemEventHandler):
+        def on_modified(self, event):
+            global deactivate
+            # Only deactivate when file matches
+            if self.find_file(event.src_path) == settings["dir_watch_file"]:
+                #Find last line in file
+                line = subprocess.check_output(['tail', '-1', event.src_path])
+                # if you find the passcode in the line
+                if "Body="+settings["alarm_pass"] in line:
+                    print("Disarming")
+                    deactivate = True
+
+        def find_file(self, file_path):
+            pathArr = file_path.split("/")
+            return pathArr[len(pathArr)-1]
+
+            
+
+
 
     def handle_on_arm(device):
         send_sms_message("Alarm Armed")
@@ -69,9 +95,17 @@ def main():
 
 
 
+    event_handler = DisarmEventHandler()
+    observer = Observer()
+    observer.schedule(event_handler, settings["dir_watch_path"], recursive=False)
+    observer.start()
+
+
+
     try:
         # Retrieve the first USB device /dev/tty.usbserial-DJ009GBR
-        device = AlarmDecoder(SerialDevice(interface=settings["device"]))
+        serialDevice = SerialDevice(interface=settings["device"])
+        device = AlarmDecoder(serialDevice)
 
         device.on_zone_fault += handle_on_zone_fault
         device.on_zone_restore += handle_zone_restore
@@ -84,10 +118,21 @@ def main():
 
         with device.open(baudrate=115200):
             while True:
+                if deactivate:
+                    deactivate = False
+                    print "Deactivated!"
+                    device.send(settings["alarm_pass"] + "1")
+
                 time.sleep(1)
+
 
     except Exception, ex:
         print 'Exception:', ex
+
+
+        
+
+
 
 
 if __name__ == '__main__':

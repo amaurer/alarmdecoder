@@ -1,0 +1,9 @@
+device: "/dev/ttyUSB0"
+# device: "/dev/tty.usbserial-DJ009GBR"
+twilio_account_sid: ""
+twilio_auth_token: ""
+twilio_numbers_to_text: ["+15553334444"]
+twilio_number_from: "+15553334444"
+alarm_pass: "1111"
+dir_watch_path: "/var/log/"
+dir_watch_file: "writefile.log"
